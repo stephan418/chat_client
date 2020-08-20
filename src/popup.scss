@@ -1,0 +1,56 @@
+.popup {
+    display: inline-block;
+    background: #1f1e1f;
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+
+    box-shadow: 0 0 20px 20px #00000022;
+}
+
+.popup-content {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+
+    color: white;
+}
+
+.popup-close {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    right: 0;
+    margin-right: 10px;
+    margin-top: 10px;
+    filter: none;
+
+    & svg {
+        height: 100%;
+        width: 100%;
+        fill: white;
+
+        position: absolute;
+
+        transition: fill 200ms;
+    }
+
+    &:hover > svg {
+        fill: #ddd;
+        cursor: pointer;
+    }
+}
+
+.popup-pos {
+    min-width: 25%;
+    max-width: 80%;
+    min-height: 15%;
+    max-height: 70%;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

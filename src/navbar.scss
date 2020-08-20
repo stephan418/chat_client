@@ -1,0 +1,182 @@
+header {
+    overflow: hidden;
+}
+nav {
+    top: 0;
+    background: #1f1e1f;
+    width: 100vw;
+    height: 10vh;
+    min-height: 4rem;
+    display: flex;
+    z-index: 9;
+    position: sticky;
+}
+
+#nav-logo {
+    right: 1;
+    height: 100%;
+    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & svg {
+        height: 80%;
+        min-height: 4rem;
+    }
+}
+
+.nav-item {
+    background: #151415;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    margin-left: 2rem;
+    min-width: 5vw;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    flex-wrap: wrap;
+
+    & .nav-text {
+        position: absolute;
+        transition: bottom 200ms;
+        bottom: -30%;
+        height: 100%;
+        min-width: 5vw;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+
+        & a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+    }
+
+    & .nav-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 200ms;
+
+        & svg {
+            height: 4rem;
+            min-height: 2rem;
+        }
+    }
+
+    &:hover .nav-icon {
+        transform: translateY(-20%) scale(0.8);
+    }
+
+    &:hover .nav-text {
+        bottom: 15%;
+    }
+
+    @media only screen and (max-height: 900px) {
+        & .nav-icon svg {
+            height: 3rem;
+        }
+    }
+
+    @media only screen and (max-height: 700px) {
+        & .nav-icon svg {
+            height: 2.5rem;
+        }
+
+        & .nav-text {
+            font-size: 0.8em;
+
+            & a {
+                font-size: 0.8rem;
+            }
+        }
+    }
+
+    @keyframes fade-title-in {
+        0% {
+            display: none;
+        }
+        100% {
+            display: unset;
+        }
+    }
+}
+
+.dropdown-btn {
+    margin-left: auto;
+    margin-right: 1%;
+}
+
+.navbar-dropdown {
+    height: 60vh;
+    background: #0e1428;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    z-index: 8;
+    width: calc(100% - 40px);
+
+    padding: 20px;
+
+    & * {
+        color: white;
+        word-wrap: break-word;
+        max-width: 60%;
+        font-size: 1.5rem;
+    }
+
+    & h1 {
+        font-size: 3rem;
+    }
+}
+
+.dropdown-enter {
+    transform: translateY(-110%);
+}
+
+.dropdown-enter-active {
+    transition: transform 500ms ease-out;
+    transform: translateY(0);
+}
+
+.dropdown-exit-active {
+    transition: transform 500ms ease-in;
+    transform: translateY(-110%);
+}
+
+@media only screen and (max-width: 1500px) {
+    .navbar-dropdown {
+        height: 100%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .navbar-dropdown {
+        display: block;
+
+        & * {
+            margin: 0 auto;
+            width: 80%;
+            max-width: 80%;
+            overflow: scroll;
+        }
+
+        & h1 {
+            margin-bottom: 10px;
+        }
+    }
+}

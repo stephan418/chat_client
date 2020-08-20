@@ -1,0 +1,28 @@
+{
+    "name": "ChatTestClient",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "dependencies": {
+        "framer-motion": "^2.3.0",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-router-dom": "^5.2.0",
+        "react-transition-group": "^4.4.1"
+    },
+    "devDependencies": {
+        "@svgr/parcel-plugin-svgr": "^5.4.0",
+        "parcel-bundler": "^1.12.4",
+        "sass": "^1.26.10"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "parcel ./src/index.html"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "browserslist": [
+        "since 2019-1"
+    ]
+}
