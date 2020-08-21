@@ -39,6 +39,8 @@ nav {
     cursor: pointer;
     user-select: none;
     flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
 
     & .nav-text {
         position: absolute;

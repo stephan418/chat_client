@@ -3,26 +3,36 @@ import { NavBar, NavItem, NavbarDropdown } from './navbar';
 import { LoginForm, CreateForm } from './form';
 import LogoIcon from './svg/logo.svg';
 import EditIcon from './svg/edit.svg';
+import ExitIcon from './svg/exitIcon.svg';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { User } from './client_lib/user';
 import { serviceReachable } from './client_lib/util';
-import { OnlineProvider, useOnline } from './utils/OnlineContext';
 import { Popup } from './Popup';
-import { usePopup } from './utils/PopupContext';
+import { useGlobalState, ACTIONS } from './utils/GlobalState';
 
 function CommonNavbar(props) {
     const location = useLocation();
+    const [{ loggedIn }, _] = useGlobalState();
 
     return (
         <NavBar logo={<LogoIcon />}>
-            <NavItem icon={<EditIcon />}>
-                {location.pathname.startsWith('/create') ? (
-                    <Link to="/login">Login</Link>
+            <AnimatePresence>
+                {!loggedIn ? (
+                    <NavItem icon={<EditIcon />} fKey="formSwitcher">
+                        {location.pathname.startsWith('/create') ? (
+                            <Link to="/login">Login</Link>
+                        ) : (
+                            <Link to="/create">New Account</Link>
+                        )}
+                    </NavItem>
                 ) : (
-                    <Link to="/create">New Account</Link>
+                    <NavItem icon={<ExitIcon />} fKey="Logout">
+                        hi
+                    </NavItem>
                 )}
-            </NavItem>
+            </AnimatePresence>
+
             <NavbarDropdown>
                 <h1>About.</h1>
                 <p>test</p>
@@ -40,9 +50,8 @@ function TestCopm() {
 
 function App() {
     const location = useLocation();
-    const [online, setOnline] = useOnline();
     const [offlinePopup, setOfflinePopup] = useState(true);
-    const [popup, setPopup] = usePopup();
+    const [{ popupActive, online, loggedIn }, dispatch] = useGlobalState();
 
     useEffect(() => {
         if (online === false) {
@@ -52,7 +61,7 @@ function App() {
                 console.log('Retry...');
                 serviceReachable().then(v => {
                     if (v) {
-                        setOnline(true);
+                        dispatch({ type: ACTIONS.SET_ONLINE });
                         clearInterval(onlineRetryInterval);
                     }
                 });
@@ -61,16 +70,19 @@ function App() {
     }, [online]);
 
     return (
-        <div className={'' + (popup ? 'popup-is-active' : '') + (online ? '' : ' offline')}>
+        <div className={'' + (popupActive ? 'popup-is-active' : '') + (online ? '' : ' offline')}>
             <CommonNavbar />
             <AnimatePresence>
                 <Switch location={location} key={location.pathname}>
                     <Route path="/" exact>
-                        <TestCopm></TestCopm>
+                        {!loggedIn && <TestCopm></TestCopm>}
                     </Route>
                     <Route path="/login" component={LoginForm}></Route>
                     <Route path="/create">
-                        <CreateForm setPopupState={s => setPopupActive(s)} key="moin1" />
+                        <CreateForm
+                            setPopupState={s => dispatch({ type: ACTIONS.SET_POPUP, payload: s })}
+                            key="moin1"
+                        />
                     </Route>
                 </Switch>
                 {!online && offlinePopup && (

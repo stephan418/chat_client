@@ -2,12 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Popup } from './Popup';
 import { User } from './client_lib/user';
-import { useOnline } from './utils/OnlineContext';
+import { Session } from './client_lib/session';
 import { serviceReachable } from './client_lib/util';
+import { useGlobalState, ACTIONS } from './utils/GlobalState';
 
 function Button(props) {
     let [style, setStyle] = useState({});
     let el = useRef();
+    let [{ online }, _] = useGlobalState();
 
     function handleMouseMove(e) {
         let bounding = el.current.getBoundingClientRect();
@@ -36,6 +38,7 @@ function Button(props) {
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 style={{ ...style, ...props.style }}
+                disabled={!online}
             >
                 {props.children}
             </button>{' '}
@@ -91,14 +94,48 @@ function FormInput(props) {
     );
 }
 
-function LoginForm() {
+function LoginForm(props) {
     let [loading, setLoading] = useState(false);
     let [password, setPassword] = useState('a');
     let [loginID, setLoginID] = useState('');
-    let [online, setOnline] = useOnline();
+    let [{ online }, dispatch] = useGlobalState();
+    let [errorPopup, setErrorPopup] = useState(false);
+
+    useEffect(() => {
+        setErrorPopup(false);
+    }, [online]);
 
     function handleSubmit(e) {
         setLoading(true);
+
+        User.getIDByLoginID(loginID)
+            .then(id => Session.create(id, password))
+            .then(session => {
+                if (session.token) {
+                    dispatch({
+                        type: ACTIONS.LOGIN_WITH,
+                        payload: {
+                            name: undefined,
+                            userId: session.for_user,
+                            token: session.token,
+                            expires: session.expires,
+                        },
+                    });
+                } else {
+                    throw new Error();
+                }
+            })
+            .then(() => props.history.push('/'))
+            .catch(() => {
+                setErrorPopup(true);
+                setLoading(false);
+
+                serviceReachable().then(reachable => {
+                    if (!reachable) {
+                        dispatch({ type: ACTIONS.SET_OFFLINE });
+                    }
+                });
+            });
 
         e.preventDefault();
     }
@@ -118,6 +155,14 @@ function LoginForm() {
                 <FormInput title="Password" type="password" value={password} setValue={v => setPassword(v)} />
                 <Button loading={loading}>Sign In</Button>
             </form>
+            <AnimatePresence>
+                {errorPopup && (
+                    <Popup close={() => setErrorPopup(false)} title="Login Error">
+                        There was an error loging you in. We are currently checking if our servers are down. But most
+                        likely you just typed your name or password incorrectly!
+                    </Popup>
+                )}
+            </AnimatePresence>
         </motion.div>
     );
 }
@@ -129,7 +174,7 @@ function CreateForm() {
     let [finishedPopup, setFinishedPopup] = useState(false);
     let [failedPopup, setFailedPopup] = useState(false);
     let [user, setUser] = useState({});
-    let [online, setOnline] = useOnline();
+    let [{ online }, dispatch] = useGlobalState();
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -148,7 +193,7 @@ function CreateForm() {
 
                 serviceReachable().then(v => {
                     if (!v) {
-                        setOnline(false);
+                        dispatch({ type: ACTIONS.SET_OFFLINE });
                     }
                 });
             });

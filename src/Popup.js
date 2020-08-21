@@ -2,10 +2,14 @@ import React, { useEffect } from 'react';
 import './popup.scss';
 import CloseIcon from './svg/close.svg';
 import { motion } from 'framer-motion';
-import { usePopup } from './utils/PopupContext';
+import { useGlobalState, ACTIONS } from './utils/GlobalState';
 
 function Popup(props) {
-    let [popup, setPopup] = usePopup();
+    let [{ popupActive }, dispatch] = useGlobalState();
+
+    function setPopup(v) {
+        dispatch({ type: ACTIONS.SET_POPUP, payload: v });
+    }
 
     useEffect(() => {
         setPopup(true);
@@ -13,7 +17,7 @@ function Popup(props) {
         return () => {
             setPopup(false);
         };
-    }, [popup]);
+    }, [popupActive]);
 
     return (
         <div className="popup-pos">

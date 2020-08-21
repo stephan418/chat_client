@@ -221,7 +221,7 @@ header > * {
             box-shadow: 0 0 40px 20px rgba(0, 0, 0, 0.15);
         }
 
-        & .form-btn:hover {
+        & .form-btn:hover:not(:disabled) {
             box-shadow: 0 0 40px 20px rgba(0, 0, 0, 0.15);
         }
 
@@ -294,6 +294,7 @@ header > * {
     font-size: 1.5rem;
     background: #292829;
     border: none;
+    position: relative;
 
     display: flex;
     align-items: center;
@@ -301,4 +302,26 @@ header > * {
 
     box-shadow: 0 0 20px 4px rgba(0, 0, 0, 0.1);
     transition: box-shadow 500ms;
+    overflow: hidden;
+}
+
+.form-btn:disabled::after {
+    content: 'No network connection';
+    font-size: 0.8rem;
+    position: absolute;
+    bottom: 0;
+    background: #ff8552;
+    height: 40%;
+    border-radius: 5px;
+    width: 100%;
+    transform: translateY(105%) scaleX(0.98);
+    transition: 200ms;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-btn:disabled:hover::after {
+    transform: scaleX(1);
 }

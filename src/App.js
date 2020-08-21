@@ -4,8 +4,7 @@ import ReactDOM from 'react-dom';
 import './style.scss';
 import { CSSTransition } from 'react-transition-group';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { OnlineProvider } from './utils/OnlineContext';
-import { PopupProvider } from './utils/PopupContext';
+import { GlobalState } from './utils/GlobalState';
 
 let App = lazy(() => import('./index'));
 
@@ -26,18 +25,16 @@ function AppContainer() {
 
     return (
         <>
-            <PopupProvider>
-                <OnlineProvider>
-                    <Suspense
-                        fallback={<MountCatcher onMount={() => setLoading(true)} onUnmount={() => setLoading(false)} />}
-                    >
-                        <Router>
-                            <App />
-                        </Router>
-                    </Suspense>
-                    <LoadingIcon loading={loading} />
-                </OnlineProvider>
-            </PopupProvider>
+            <GlobalState>
+                <Suspense
+                    fallback={<MountCatcher onMount={() => setLoading(true)} onUnmount={() => setLoading(false)} />}
+                >
+                    <Router>
+                        <App />
+                    </Router>
+                </Suspense>
+                <LoadingIcon loading={loading} />
+            </GlobalState>
         </>
     );
 }
