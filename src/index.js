@@ -101,15 +101,25 @@ function App() {
             <AnimatePresence>
                 <Switch location={location} key={location.pathname}>
                     <Route path="/" exact>
-                        {!loggedIn && <TestCopm></TestCopm>}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.01 }}
+                        >
+                            {loggedIn ? <Redirect to="/chat" /> : <Redirect to="/login" />}
+                        </motion.div>
                     </Route>
-                    <Route path="/login" component={LoginForm}></Route>
+                    <Route path="/login">
+                        <LoginForm />
+                    </Route>
                     <Route path="/create">
                         <CreateForm
                             setPopupState={s => dispatch({ type: ACTIONS.SET_POPUP, payload: s })}
                             key="moin1"
                         />
                     </Route>
+                    <Route path="/chat"></Route>
                 </Switch>
                 {!online && offlinePopup && (
                     <Popup title="Connection error" close={() => setOfflinePopup(false)}>

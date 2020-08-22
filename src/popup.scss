@@ -54,3 +54,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.popup-is-active > * {
+    pointer-events: none;
+}
+
+.popup-pos > * {
+    pointer-events: all;
+}

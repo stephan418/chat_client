@@ -5,6 +5,7 @@ import { User } from './client_lib/user';
 import { Session } from './client_lib/session';
 import { serviceReachable } from './client_lib/util';
 import { useGlobalState, ACTIONS } from './utils/GlobalState';
+import './form.scss';
 
 function Button(props) {
     let [style, setStyle] = useState({});
