@@ -4,7 +4,7 @@ import { LoginForm, CreateForm } from './form';
 import LogoIcon from './svg/logo.svg';
 import EditIcon from './svg/edit.svg';
 import ExitIcon from './svg/exitIcon.svg';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link, NavLink, Redirect, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { User } from './client_lib/user';
 import { serviceReachable } from './client_lib/util';
@@ -15,20 +15,46 @@ function CommonNavbar(props) {
     const location = useLocation();
     const [{ loggedIn }, _] = useGlobalState();
 
+    let [onCooldown, setOnCooldown] = useState(false);
+
+    // Throttle rate of click in order to prevent a bug where a second, never entered click is detected
+    useEffect(() => {
+        if (!onCooldown) {
+            setOnCooldown(true);
+            setTimeout(() => {
+                setOnCooldown(false);
+            }, 50);
+        }
+    }, [location.pathname]);
+
     return (
         <NavBar logo={<LogoIcon />}>
             <AnimatePresence>
                 {!loggedIn ? (
                     <NavItem icon={<EditIcon />} fKey="formSwitcher">
                         {location.pathname.startsWith('/create') ? (
-                            <Link to="/login">Login</Link>
+                            <NavLink
+                                onClick={e => {
+                                    if (onCooldown) e.preventDefault();
+                                }}
+                                to="/login"
+                            >
+                                Login
+                            </NavLink>
                         ) : (
-                            <Link to="/create">New Account</Link>
+                            <NavLink
+                                to="/create"
+                                onClick={e => {
+                                    if (onCooldown) e.preventDefault();
+                                }}
+                            >
+                                New Account
+                            </NavLink>
                         )}
                     </NavItem>
                 ) : (
                     <NavItem icon={<ExitIcon />} fKey="Logout">
-                        hi
+                        Account
                     </NavItem>
                 )}
             </AnimatePresence>
