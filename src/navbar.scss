@@ -9,21 +9,39 @@ nav {
     min-height: 4rem;
     display: flex;
     z-index: 9;
-    position: sticky;
+    position: fixed;
 }
 
 #nav-logo {
-    right: 1;
+    width: 130px;
     height: 100%;
-    width: 15%;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
     & svg {
-        height: 80%;
+        height: 70%;
         min-height: 4rem;
     }
+}
+
+#nav-logo + h3 {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    width: auto;
+    padding: 0 20px;
+    border-radius: 10px;
+    background: darken(white, 10%);
+    color: #1f1e1f;
+    left: 130px;
+    top: 17%;
+    z-index: 8;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .nav-item {
@@ -41,6 +59,10 @@ nav {
     flex-wrap: wrap;
     position: relative;
     overflow: hidden;
+
+    &:nth-of-type(2) {
+        margin-left: 5rem;
+    }
 
     & .nav-text {
         position: absolute;

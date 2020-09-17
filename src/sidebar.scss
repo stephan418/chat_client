@@ -1,0 +1,56 @@
+$sidebar-width: 130px;
+
+aside.sidebar {
+    width: $sidebar-width;
+    overflow: hidden;
+    transition: width 200ms ease-in-out;
+    background: #1f1e1f;
+    color: darken(white, 10%);
+    display: inline-flex;
+    flex-direction: column;
+    height: 90vh;
+    margin-top: 10vh;
+    // TODO: Media qurey to adjust margin-top and height to new navbar scalings
+    z-index: 9;
+    position: static;
+
+    & .contact {
+        display: flex;
+        width: 100%;
+        margin-left: $sidebar-width * 0.2;
+        margin-top: 10px;
+        cursor: pointer;
+
+        & .contact-image.data-no-img {
+            height: $sidebar-width * 0.6;
+            width: $sidebar-width * 0.6;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            & svg {
+                width: 60%;
+                height: 60%;
+            }
+        }
+
+        & h3 {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 2rem;
+            width: auto;
+            padding: 0 20px;
+            border-radius: 10px;
+            z-index: 10;
+
+            left: $sidebar-width + 20px;
+            background: #1f1e1f;
+
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+    }
+}

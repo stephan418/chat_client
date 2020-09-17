@@ -4,11 +4,12 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
-        "framer-motion": "^2.3.0",
+        "framer-motion": "^2.6.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-router-dom": "^5.2.0",
-        "react-transition-group": "^4.4.1"
+        "react-transition-group": "^4.4.1",
+        "socket.io-client": "^2.3.0"
     },
     "devDependencies": {
         "@svgr/parcel-plugin-svgr": "^5.4.0",

@@ -27,6 +27,22 @@ export class User {
         }
     }
 
+    static idExists(id) {
+        if (!isNaN(id)) {
+            throw new TypeError('Argument id has to be a string');
+        }
+
+        return fetch(`http://127.0.0.1:5000/user/${id}`)
+            .then(data => data.json())
+            .then(json => {
+                if (json.error === 'NOT_FOUND') {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+    }
+
     // Instanciate a new User with data from the server
     static async getFromServer(id) {
         if (!isNaN(id)) {

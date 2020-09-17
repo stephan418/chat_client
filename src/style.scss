@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&display=swap');
 
 /* ----------------- *
  * Default styles    *
@@ -9,6 +9,7 @@ body {
     background: #2f2d2e;
     font-family: 'Montserrat', sans-serif;
     padding: 0;
+    overflow: hidden;
 }
 
 html,
@@ -116,4 +117,209 @@ header > * {
 
     box-shadow: 0 0 0 0px #ff8552 inset;
     transition: box-shadow 200ms;
+}
+
+// ba
+
+.chat {
+    position: absolute;
+    top: 10vh;
+    left: 130px;
+    width: calc(100% - 130px);
+    height: 90vh;
+    box-sizing: border-box;
+
+    & .chat-header {
+        width: 100%;
+        height: 13%;
+        min-height: 80px;
+        margin-top: 20px;
+
+        display: flex;
+        align-items: center;
+
+        & .chat-contact-img {
+            height: 90px;
+            width: 90px;
+            border-radius: 50%;
+            background: red;
+            margin-left: 3%;
+        }
+
+        & .chat-name {
+            color: white;
+            font-size: 3rem;
+            margin-left: 1.5%;
+        }
+
+        & .chat-options {
+            height: 80px;
+            width: 80px;
+            margin-left: 2%;
+            cursor: pointer;
+        }
+    }
+
+    & .message-input {
+        position: absolute;
+        bottom: 0;
+        height: 10%;
+        background: #3e3c3e;
+        width: 100%;
+        min-height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+
+        & input {
+            width: 80%;
+            height: 70%;
+            background: #535052;
+            border: none;
+            border-radius: 10px;
+            caret-color: white;
+            padding-left: 20px;
+            color: white;
+            font-size: 1.5rem;
+
+            &::placeholder {
+                color: white;
+            }
+
+            &:placeholder-shown + button {
+                filter: brightness(50%);
+                pointer-events: none;
+            }
+        }
+
+        & button.send-btn {
+            height: 70px;
+            width: 70px;
+            background: none;
+            border: none;
+            cursor: pointer;
+
+            & svg {
+                fill: white;
+            }
+
+            transition: filter 200ms;
+        }
+
+        & .more {
+            height: 70px;
+            width: 70px;
+            cursor: pointer;
+        }
+    }
+}
+
+.message-container {
+    position: absolute;
+    bottom: max(70px + 20px, calc(10% + 20px));
+    left: 0;
+    right: 0;
+    top: max(100px, calc(13% + 20px));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow-y: scroll;
+
+    & .message {
+        margin: 10px;
+        box-sizing: border-box;
+        display: block;
+        color: white;
+        font-size: 2rem;
+
+        & .message-content {
+            background: #535052;
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 10px;
+            min-width: 200px;
+        }
+    }
+}
+
+.message {
+    & .message-inner {
+        display: inline-flex;
+        flex-direction: column;
+
+        & .message-content {
+            display: flex;
+            align-items: center;
+        }
+
+        & .message-date {
+            font-size: 0.7rem;
+            font-weight: 300;
+        }
+    }
+}
+
+.message.sender {
+    margin-right: 2%;
+
+    & .message-inner {
+        float: right;
+
+        & .message-content {
+            justify-content: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        & .message-date {
+            margin-left: 5px;
+        }
+    }
+}
+
+.message.receiver {
+    margin-left: 2%;
+
+    & .message-content {
+        border-top-left-radius: 0;
+    }
+
+    & .message-date {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 5px;
+    }
+}
+
+.click-to-copy {
+    pointer-events: none;
+    background: none;
+    border: none;
+    outline: none;
+    display: inline;
+    font-size: 1.2rem;
+
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    text-align-last: center;
+}
+
+button {
+    height: 30px;
+    width: 60px;
+    background: #535052;
+    color: white;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+}
+
+#name-of-partner {
+    color: white;
+    background: lighten(#535052, 40%);
+    margin: 0 10px 0 0;
+    height: 30px;
+    font-size: 1.2rem;
+    border: none;
+    outline: none;
+    color: black;
 }

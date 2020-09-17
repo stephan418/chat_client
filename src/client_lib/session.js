@@ -1,4 +1,4 @@
-import { RequestError } from "./error.js";
+import { RequestError } from './error.js';
 
 export class Session {
     constructor(tokenOrObj, for_user, creation, expires) {
@@ -16,13 +16,13 @@ export class Session {
     }
 
     static async create(for_user, password) {
-        if (!(typeof for_user == "string" && typeof password == "string")) {
-            throw new TypeError("Both for_user and password must be a String");
+        if (!(typeof for_user == 'string' && typeof password == 'string')) {
+            throw new TypeError('Both for_user and password must be a String');
         }
 
-        return fetch("http://127.0.0.1:5000/session/", {
-            method: "POST",
-            headers: new Headers({ "Content-Type": "application/json" }),
+        return fetch('http://127.0.0.1:5000/session/', {
+            method: 'POST',
+            headers: new Headers({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({
                 id: for_user,
                 password: password,

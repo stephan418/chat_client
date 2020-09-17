@@ -6,6 +6,7 @@ import { Session } from './client_lib/session';
 import { serviceReachable } from './client_lib/util';
 import { useGlobalState, ACTIONS } from './utils/GlobalState';
 import './form.scss';
+import { withRouter, Link } from 'react-router-dom';
 
 function Button(props) {
     let [style, setStyle] = useState({});
@@ -103,6 +104,10 @@ function LoginForm(props) {
     let [errorPopup, setErrorPopup] = useState(false);
 
     useEffect(() => {
+        document.title = 'Login | WebChat Controller';
+    }, []);
+
+    useEffect(() => {
         setErrorPopup(false);
     }, [online]);
 
@@ -126,10 +131,12 @@ function LoginForm(props) {
                     throw new Error();
                 }
             })
-            .then(() => props.history.push('/'))
-            .catch(() => {
+            .then(() => props.history.push('/chat'))
+            .catch(e => {
                 setErrorPopup(true);
                 setLoading(false);
+
+                console.log(e);
 
                 serviceReachable().then(reachable => {
                     if (!reachable) {
@@ -176,6 +183,10 @@ function CreateForm() {
     let [failedPopup, setFailedPopup] = useState(false);
     let [user, setUser] = useState({});
     let [{ online }, dispatch] = useGlobalState();
+
+    useEffect(() => {
+        document.title = 'Create | WebChat Controller';
+    }, []);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -256,5 +267,7 @@ function CreateForm() {
         </motion.div>
     );
 }
+
+LoginForm = withRouter(LoginForm);
 
 export { LoginForm, Button, FormInput, CreateForm };

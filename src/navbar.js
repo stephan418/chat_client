@@ -2,8 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import './navbar.scss';
 import ExpandIcon from './svg/expandIcon.svg';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useGlobalState, ACTIONS } from './utils/GlobalState';
+import { withRouter, NavLink } from 'react-router-dom';
 
 function NavItem(props) {
     let [style, setStyle] = useState({});
@@ -53,6 +54,15 @@ function NavbarDropdown(props) {
 function NavBar(props) {
     let [dropdownActive, setDropdownActive] = useState(false);
     let [dropdownEntered, setDropdownEntered] = useState(false);
+    const [hover, setHover] = useState(false);
+
+    function handleMouseEnter() {
+        setHover(true);
+    }
+
+    function handleMouseLeave() {
+        setHover(false);
+    }
 
     function handleActiveClick() {
         setDropdownActive(prev => !prev);
@@ -74,10 +84,39 @@ function NavBar(props) {
     return (
         <motion.header initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0 }}>
             <nav>
-                <div id="nav-logo">{props.logo}</div>
+                <motion.div
+                    id="nav-logo"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    onFocus={handleMouseEnter}
+                    onBlur={handleMouseLeave}
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.5, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    <NavLink to="/">{props.logo}</NavLink>
+                </motion.div>{' '}
+                <AnimatePresence>
+                    {hover && (
+                        <motion.h3
+                            initial={{ opacity: 0, x: '-50%', scale: 0.5 }}
+                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                            exit={{ opacity: 0, x: '-50%', scale: 0.5 }}
+                            transition={{ type: 'tween', ease: 'easeInOut', duration: 0.13 }}
+                        >
+                            Home
+                        </motion.h3>
+                    )}
+                </AnimatePresence>
                 {children}
                 {lastIsDropdown && (
-                    <NavItem icon={<ExpandIcon />} className="dropdown-btn" onClick={handleActiveClick}>
+                    <NavItem
+                        icon={<ExpandIcon />}
+                        className="dropdown-btn"
+                        onClick={handleActiveClick}
+                        fKey="expandBtn"
+                    >
                         More
                     </NavItem>
                 )}
@@ -97,5 +136,7 @@ function NavBar(props) {
         </motion.header>
     );
 }
+
+NavBar = withRouter(NavBar);
 
 export { NavItem, NavBar, NavbarDropdown };
